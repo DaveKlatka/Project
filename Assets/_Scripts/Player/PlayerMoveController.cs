@@ -5,23 +5,24 @@ using UnityEngine.AI;
 
 public class PlayerMoveController : MonoBehaviour {
 
-    private NavMeshAgent agent;
+    public LayerMask whatCanBeClickedOn;
+
+    private NavMeshAgent myAgent;
 
 	void Start ()
     {
-        agent = GetComponent<NavMeshAgent>();
+        myAgent = GetComponent<NavMeshAgent>();
 	}
 	
 	void Update ()
     {
-		if (Input.GetMouseButton(0))
+        if (Input.GetMouseButtonDown(0))
         {
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            RaycastHit hit;
-            Physics.Raycast(ray, out hit);
-            if(hit.transform)
+            Ray myRay = Camera.main.ScreenPointToRay(Input.mousePosition);
+            RaycastHit hitInfo;
+            if (Physics.Raycast(myRay, out hitInfo, 100, whatCanBeClickedOn))
             {
-                agent.SetDestination(hit.point);
+                myAgent.SetDestination(hitInfo.point);
             }
         }
 	}
